@@ -1,5 +1,5 @@
 from pythonosc import udp_client
-from config import Config
+from src.config import Config
 
 class AbletonDriver:
     def __init__(self):

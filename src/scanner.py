@@ -49,26 +49,46 @@ class AbletonScanner:
         idx, vol = args[0], args[1]
         if idx not in self.temp_tracks: self.temp_tracks[idx] = {}
         self.temp_tracks[idx]["volume"] = round(vol, 2)
-
+        
     def _track_mute_handler(self, address, *args):
         idx, mute_state = args[0], args[1]
         if idx not in self.temp_tracks: self.temp_tracks[idx] = {}
         self.temp_tracks[idx]["active"] = not bool(mute_state)
 
     def scan(self) -> Dict:
-        """Ejecuta el escaneo completo de la sesión"""
+        """Ejecuta el escaneo completo de la sesión con mayor detalle"""
         print("Iniciando escaneo de sesión...")
         self.temp_tracks = {}
         
+        # Solicitar información básica
         self.client.send_message("/live/song/get/tempo", [])
         self.client.send_message("/live/song/get/num_tracks", [])
         
-        time.sleep(1.5)
+        time.sleep(2.0)  # Aumentar tiempo para mejor captura
         
+        # Solicitar información detallada de cada track
+        for i in range(self.state.get("num_tracks", 0)):
+            self.client.send_message("/live/track/get/name", [i])
+            self.client.send_message("/live/track/get/volume", [i])
+            self.client.send_message("/live/track/get/mute", [i])
+            self.client.send_message("/live/track/get/armed", [i])  # Estado de grabación
+            self.client.send_message("/live/track/get/clip", [i, 0])  # Estado de clips
+        
+        time.sleep(1.5)  # Tiempo adicional para recibir respuestas
+        
+        # Construir estado con información más completa
         self.state["tracks"] = [
-            {"id": i, **self.temp_tracks[i]} 
+            {
+                "id": i, 
+                "name": self.temp_tracks[i].get("name", f"Track {i}"),
+                "volume": self.temp_tracks[i].get("volume", 0.0),
+                "active": self.temp_tracks[i].get("active", True),
+                "armed": self.temp_tracks[i].get("armed", False),
+                "clip_playing": self.temp_tracks[i].get("clip", 0)
+            } 
             for i in sorted(self.temp_tracks.keys())
         ]
+        
         return self.state
 
 if __name__ == "__main__":
