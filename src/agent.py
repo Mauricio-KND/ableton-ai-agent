@@ -12,8 +12,8 @@ class AbletonAgent:
     def __init__(self):
         
         self.client = OpenAI(
-            api_key=os.getenv("DEEPSEEK_API_KEY"),
-            base_url=os.getenv("DEEPSEEK_BASE_URL"),
+            api_key=os.getenv("OLLAMA_API_KEY"),
+            base_url=os.getenv("OLLAMA_BASE_URL"),
         )
         self.scanner = AbletonScanner()
         self.driver = AbletonDriver()

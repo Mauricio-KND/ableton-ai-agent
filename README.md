@@ -24,9 +24,9 @@ pip install -r requirements.txt
 ## Configuration
 1. Create `.env` file in project root:
 ```ini
-# Ollama configuration (legacy variable names preserved)
-DEEPSEEK_API_KEY=ollama  # No actual key needed for local Ollama
-DEEPSEEK_BASE_URL=http://localhost:11431/v1
+# Ollama configuration
+OLLAMA_API_KEY=ollama  # No actual key needed for local Ollama
+OLLAMA_BASE_URL=http://localhost:11434/v1
 
 # Ableton OSC settings
 ABLETON_IP=127.0.0.1
