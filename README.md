@@ -22,18 +22,8 @@ pip install -r requirements.txt
 ```
 
 ## Configuration
-1. Create `.env` file in project root:
-```ini
-# Ollama configuration
-OLLAMA_API_KEY=ollama  # No actual key needed for local Ollama
-OLLAMA_BASE_URL=http://localhost:11434/v1
-
-# Ableton OSC settings
-ABLETON_IP=127.0.0.1
-ABLETON_SEND_PORT=11000
-ABLETON_RECEIVE_PORT=11001
-DEBUG_MODE=True
-```
+1. Copy `.env.example` to `.env` and modify values as needed (this file should NOT be committed to version control)
+2. For local development, you can set environment variables directly in your shell or use a .env file
 
 ## Usage
 ```python
