@@ -91,9 +91,27 @@ class AbletonScanner:
         
         return self.state
 
+import json
+import os
+
 if __name__ == "__main__":
     scanner = AbletonScanner()
     snapshot = scanner.scan()
-    print("\n--- SNAPSHOT DE LA SESIÓN ---")
-    import json
-    print(json.dumps(snapshot, indent=2))
+    
+    # Esto obtiene la ruta absoluta de 'src/scanner.py'
+    current_dir = os.path.dirname(os.path.abspath(__file__))
+    
+    # Subimos un nivel a la raíz y bajamos a 'data'
+    project_root = os.path.dirname(current_dir)
+    output_path = os.path.join(project_root, "data", "session_state.json")
+    
+    # Asegurarnos de que la carpeta data exista (en la raíz)
+    os.makedirs(os.path.dirname(output_path), exist_ok=True)
+    
+    # Guardar el JSON
+    try:
+        with open(output_path, "w") as f:
+            json.dump(snapshot, f, indent=4)
+        print(f"\n✅ Snapshot guardado exitosamente en: {output_path}")
+    except Exception as e:
+        print(f"❌ Error al guardar el archivo: {e}")
