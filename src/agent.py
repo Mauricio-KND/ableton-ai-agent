@@ -1,9 +1,9 @@
 import os
 import json
 from openai import OpenAI  # DeepSeek usa el mismo cliente
-from src.scanner import AbletonScanner
-from src.ableton_driver import AbletonDriver
-from src.config import Config
+from scanner import AbletonScanner
+from ableton_driver import AbletonDriver
+from config import Config
 from dotenv import load_dotenv
 
 load_dotenv()
