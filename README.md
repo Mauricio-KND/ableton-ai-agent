@@ -1,4 +1,6 @@
 # Ableton Live AI Agent Controller
+![CI Status](https://github.com/Mauricio-KND/ableton-ai-agent/actions/workflows/ci.yml/badge.svg)
+
 
 Control Ableton Live using natural language commands via local AI (Ollama) and OSC protocol.
 
