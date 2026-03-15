@@ -3,7 +3,7 @@ from typing import Dict, List
 from pythonosc import udp_client, osc_server
 from pythonosc.dispatcher import Dispatcher
 import threading
-from config import Config
+from .config import Config
 
 class AbletonScanner:
     def __init__(self):

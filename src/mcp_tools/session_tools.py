@@ -68,7 +68,12 @@ class SessionTools:
             
             old_tempo = self.session.session_state.tempo
             
-            # This would use actual MCP call to Ableton
+            # Call actual AbletonDriver method
+            if self.ableton:
+                self.ableton.set_tempo(tempo)
+            else:
+                self.logger.warning("No Ableton client available - simulating tempo change")
+            
             # Update session state
             self.session.update_session_property('tempo', tempo)
             
@@ -133,7 +138,12 @@ class SessionTools:
                     'message': "Playback is already running"
                 }
             
-            # This would use actual MCP call to Ableton
+            # Call actual AbletonDriver method
+            if self.ableton:
+                self.ableton.start_playback()
+            else:
+                self.logger.warning("No Ableton client available - simulating playback start")
+            
             # Update session state
             self.session.update_session_property('is_playing', True)
             
@@ -171,7 +181,12 @@ class SessionTools:
                     'message': "Playback is already stopped"
                 }
             
-            # This would use actual MCP call to Ableton
+            # Call actual AbletonDriver method
+            if self.ableton:
+                self.ableton.stop_playback()
+            else:
+                self.logger.warning("No Ableton client available - simulating playback stop")
+            
             # Update session state
             self.session.update_session_property('is_playing', False)
             

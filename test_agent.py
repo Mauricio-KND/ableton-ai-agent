@@ -33,7 +33,7 @@ def test_basic_functionality():
         memory.add_device(0, 0, "Operator", "instrument")
         
         context = memory.get_context_summary()
-        print(f"✅ Memory Manager working: {len(context['tracks'])} tracks, {len(context['devices'])} devices")
+        print(f"✅ Memory Manager working: {context['total_tracks']} tracks, {context['total_devices']} devices")
         
         # Test session manager
         print("\n🎛️ Testing Session Manager...")
@@ -43,8 +43,8 @@ def test_basic_functionality():
         import time
         time.sleep(0.2)  # Let it update once
         
-        session_info = session.get_session_info()
-        print(f"✅ Session Manager working: {len(session_info['session_info'])} properties")
+        session_info = session.get_state_summary()
+        print(f"✅ Session Manager working: {len(session_info)} properties")
         
         session.stop_monitoring()
         
@@ -117,7 +117,7 @@ def test_musical_features():
         print(f"✅ Drum pattern: {len(drums)} beats")
         
         # Test chord progression
-        chords = generate_chord_progression('C', 'major', 4)
+        chords = generate_chord_progression('C', ['I', 'IV', 'V', 'I'], 'major')
         print(f"✅ Chord progression: {len(chords)} chords")
         
         print("🎼 All musical features working!")
