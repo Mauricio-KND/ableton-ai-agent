@@ -67,9 +67,13 @@ class TrackTools:
             name = validate_track_name(name)
             self.logger.info(f"Creating MIDI track: {name}")
             
-            # This would use actual MCP call to Ableton
-            # For now, we'll simulate the response
-            track_id = len(self.session.tracks)  # Simulated track ID
+            # Call actual AbletonDriver method
+            if self.ableton:
+                track_id = len(self.session.tracks)  # Use current track count as index
+                self.ableton.create_midi_track(track_id)
+            else:
+                self.logger.warning("No Ableton client available - simulating MIDI track creation")
+                track_id = len(self.session.tracks)
             
             # Update session state
             from ..state.session_manager import TrackState
@@ -115,8 +119,13 @@ class TrackTools:
             name = validate_track_name(name)
             self.logger.info(f"Creating audio track: {name}")
             
-            # This would use actual MCP call to Ableton
-            track_id = len(self.session.tracks)  # Simulated track ID
+            # Call actual AbletonDriver method
+            if self.ableton:
+                track_id = len(self.session.tracks)  # Use current track count as index
+                self.ableton.create_audio_track(track_id)
+            else:
+                self.logger.warning("No Ableton client available - simulating audio track creation")
+                track_id = len(self.session.tracks)
             
             # Update session state
             from ..state.session_manager import TrackState

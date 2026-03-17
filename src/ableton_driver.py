@@ -47,12 +47,12 @@ class AbletonDriver:
     def create_midi_track(self, track_index: int):
         """Create a new MIDI track at specified index"""
         logger.info(f"Creating MIDI track at index {track_index}")
-        self.client.send_message("/live/track/create", [track_index, "midi"])
+        self.client.send_message("/live/song/create_midi_track", [track_index])
 
     def create_audio_track(self, track_index: int):
         """Create a new audio track at specified index"""
         logger.info(f"Creating audio track at index {track_index}")
-        self.client.send_message("/live/track/create", [track_index, "audio"])
+        self.client.send_message("/live/song/create_audio_track", [track_index])
 
     def delete_track(self, track_index: int):
         """Delete a track"""
