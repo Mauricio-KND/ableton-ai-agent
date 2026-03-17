@@ -177,23 +177,36 @@ You must respond with a JSON object containing:
   ]
 }}
 
+CRITICAL TRACK ID MANAGEMENT:
+1. When creating tracks, the 'create_midi_track' and 'create_audio_track' tools return a 'track_id' (integer)
+2. You MUST use these returned track_ids in subsequent commands that reference tracks
+3. NEVER use placeholder names like '<Bass Track ID>' - always use the actual numeric track_id
+4. Store track_ids mentally: track 0, track 1, track 2, etc.
+5. Use track_ids for: set_track_volume, set_track_name, add_device, create_midi_clip, etc.
+
+EXAMPLE WORKFLOW:
+User: "Create a techno song with a bass, a lead synth and a drum"
+Response: {{
+  "thought": "Creating a techno song by setting tempo, creating 3 tracks (bass, lead, drums), and setting their volumes",
+  "commands": [
+    {{"tool": "set_tempo", "parameters": {{"tempo": 130}}}},
+    {{"tool": "create_midi_track", "parameters": {{"name": "Bass"}}}},
+    {{"tool": "create_midi_track", "parameters": {{"name": "Lead"}}}},
+    {{"tool": "create_audio_track", "parameters": {{"name": "Drums"}}}},
+    {{"tool": "set_track_volume", "parameters": {{"track_id": 0, "volume": 0.8}}}},
+    {{"tool": "set_track_volume", "parameters": {{"track_id": 1, "volume": 0.7}}}},
+    {{"tool": "set_track_volume", "parameters": {{"track_id": 2, "volume": 0.9}}}}
+  ]
+}}
+
 IMPORTANT GUIDELINES:
 1. Always check the current session state before making changes
 2. Use memory context to reference previously created tracks/clips
-3. Validate parameters before executing commands
-4. Handle errors gracefully and provide helpful feedback
-5. Break complex commands into multiple simple tool calls
-6. Use descriptive names when creating new elements
-
-EXAMPLES:
-User: "Create a techno track at 130 BPM"
-Response: {{
-  "thought": "Creating a techno track at 130 BPM by setting tempo and creating a MIDI track",
-  "commands": [
-    {{"tool": "set_tempo", "parameters": {{"tempo": 130}}}},
-    {{"tool": "create_midi_track", "parameters": {{"name": "Techno Track"}}}}
-  ]
-}}
+3. Use actual numeric track_ids (0, 1, 2, etc.) not placeholder names
+4. Validate parameters before executing commands
+5. Handle errors gracefully and provide helpful feedback
+6. Break complex commands into multiple simple tool calls
+7. Use descriptive names when creating new elements
 
 Now process this command: "{user_command}"
 """
