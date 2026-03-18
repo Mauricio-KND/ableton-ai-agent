@@ -1,4 +1,4 @@
-# Ableton AI Agent
+# Ableton AI Agent (BETA)
 
 MCP-based AI agent for controlling Ableton Live through natural language commands. Uses local LLM inference with enhanced musical pattern generation capabilities.
 
@@ -24,8 +24,8 @@ MCP-based AI agent for controlling Ableton Live through natural language command
 ```
 
 ### Core Components
-- **MCP Tools**: 34 modular functions for Ableton operations
-- **LLM Integration**: Local Ollama with enhanced musical guidance
+- **MCP Tools**: Several modular functions for Ableton operations
+- **LLM Integration**: Local Ollama
 - **State Management**: Memory context and real-time session tracking
 - **OSC Communication**: Direct Ableton Live control via AbletonOSC
 
@@ -278,4 +278,4 @@ MIT License - see [LICENSE](LICENSE) file.
 
 ---
 
-**Technical Architecture**: MCP-based system with 34 tools, enhanced LLM guidance, and real-time musical pattern generation.
+**Technical Architecture**: MCP-based system with tools, LLM guidance, and musical pattern generation.
