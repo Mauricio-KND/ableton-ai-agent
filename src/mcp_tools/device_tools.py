@@ -106,7 +106,7 @@ class DeviceTools:
             
             # Note: AbletonOSC doesn't support direct device creation via OSC
             # We'll provide guidance for manual device addition
-            self.logger.info(f"🎛️  Manual device addition required:")
+            self.logger.info(f"Manual device addition required:")
             self.logger.info(f"   1. In Ableton Live, select track {track_id}")
             self.logger.info(f"   2. Click 'Device' button or press Shift+Cmd+T")
             self.logger.info(f"   3. Search for '{device_name}' in the browser")

@@ -448,20 +448,20 @@ def main():
     agent = AbletonAgent()
     
     try:
-        print("🎵 Ableton AI Agent with MCP Integration")
+        print("Ableton AI Agent with MCP Integration")
         print("Type 'help' for available commands or 'quit' to exit")
         print("=" * 50)
         
         while True:
             try:
-                user_input = input("\n🎹 What would you like to do in Ableton? ").strip()
+                user_input = input("\nWhat would you like to do in Ableton? ").strip()
                 
                 if user_input.lower() in ['quit', 'exit', 'q']:
-                    print("👋 Goodbye!")
+                    print("Goodbye!")
                     break
                     
                 if user_input.lower() == 'help':
-                    print("\n📖 Available commands:")
+                    print("\nAvailable commands:")
                     print("- 'Create a [genre] track at [BPM] BPM'")
                     print("- 'Add [device] to track [name/ID]'")
                     print("- 'Set tempo to [BPM]'")
@@ -486,12 +486,12 @@ def main():
                             track_elements = [e.strip() for e in elements[3].split('+')]
                             
                             result = agent.generate_track(genre, bpm, key, track_elements)
-                            print(f"\n✅ {result['message']}")
+                            print(f"\n{result['message']}")
                             for track_name in result['track_mapping'].values():
-                                print(f"   🎵 Created: {track_name}")
+                                print(f"   Created: {track_name}")
                             continue
                     except (IndexError, ValueError):
-                        print(f"❌ Invalid generate command format. Use: 'generate track: genre, bpm, key, elements'")
+                        print(f"Invalid generate command format. Use: 'generate track: genre, bpm, key, elements'")
                         continue
                 
                 # Execute regular command
@@ -499,22 +499,22 @@ def main():
                 
                 # Display results
                 if result['success']:
-                    print(f"\n✅ {result['thought']}")
-                    print(f"🔧 Executed {result['successful_commands']}/{result['total_commands']} commands")
+                    print(f"\n{result['thought']}")
+                    print(f"Executed {result['successful_commands']}/{result['total_commands']} commands")
                     
                     for cmd_result in result['results']:
                         if cmd_result['result']['success']:
-                            print(f"   ✓ {cmd_result['result']['message']}")
+                            print(f"   {cmd_result['result']['message']}")
                         else:
-                            print(f"   ❌ {cmd_result['result']['message']}")
+                            print(f"   {cmd_result['result']['message']}")
                 else:
-                    print(f"\n❌ Error: {result.get('message', 'Unknown error')}")
+                    print(f"\nError: {result.get('message', 'Unknown error')}")
                     
             except KeyboardInterrupt:
-                print("\n👋 Goodbye!")
+                print("\nGoodbye!")
                 break
             except Exception as e:
-                print(f"\n💥 Unexpected error: {e}")
+                print(f"\nUnexpected error: {e}")
                 
     finally:
         agent.shutdown()
