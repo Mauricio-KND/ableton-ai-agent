@@ -1,341 +1,281 @@
 # Ableton AI Agent
 
-Control Ableton Live using natural language commands. This AI agent uses local LLM technology to understand your musical intentions and execute them directly in Ableton Live.
-
-## What It Does
-
-The Ableton AI Agent lets you:
-- Create tracks and devices with simple commands
-- Control session parameters like tempo and playback
-- Generate musical patterns and arrangements
-- Manage clips, tracks, and devices conversationally
-
-Example commands:
-- "Create a techno track at 130 BPM"
-- "Add reverb to the bass track"
-- "Set tempo to 140 BPM"
-- "Start playback"
-- "Generate a schranz track at 169 BPM with bassline and melody in F minor"
+MCP-based AI agent for controlling Ableton Live through natural language commands. Uses local LLM inference with enhanced musical pattern generation capabilities.
 
 ## Architecture
 
-The system uses MCP (Model Context Protocol) architecture with these key components:
-
-### Core System
-- **MCP Tools**: Modular functions for different Ableton operations
-- **State Management**: Memory system for context-aware operations
-- **LLM Integration**: Local Ollama model for natural language processing
-- **OSC Communication**: Direct communication with Ableton Live via AbletonOSC
-
-### MCP Tools Categories
-- **Track Management**: Create, delete, configure tracks
-- **Session Control**: Tempo, playback, time signature
-- **Clip Management**: Create, modify, launch clips
-- **Device Management**: Add and control instruments/effects
-- **Musical Generation**: Create patterns, basslines, melodies, drums
-
-## Installation
-
-### System Requirements
-- macOS (Apple Silicon recommended)
-- Ableton Live 12 Lite or higher
-- Python 3.8+
-- Ollama with Llama 3.2 model
-
-### Step 1: Install Ollama
-
-```bash
-# Install Ollama
-curl -fsSL https://ollama.ai/install.sh | sh
-
-# Pull the required model
-ollama pull llama3.2:3b
-
-# Start Ollama service
-ollama serve
+```
+┌─────────────────┐    ┌──────────────────┐    ┌─────────────────┐
+│   User Input   │───▶│  LLM (Ollama)    │───▶│   MCP Tools     │
+│  (Natural      │    │  llama3.2:3b     │    │   (34 Tools)    │
+│   Language)    │    │                  │    │                 │
+└─────────────────┘    └──────────────────┘    └─────────────────┘
+                                                       │
+                       ┌──────────────────┐          │
+                       │  State Manager   │◀─────────┘
+                       │  (Memory +       │
+                       │   Session)       │
+                       └──────────────────┘
+                                │
+                       ┌──────────────────┐
+                       │  Ableton Live    │
+                       │  (via AbletonOSC)│
+                       └──────────────────┘
 ```
 
-### Step 2: Setup the Agent
+### Core Components
+- **MCP Tools**: 34 modular functions for Ableton operations
+- **LLM Integration**: Local Ollama with enhanced musical guidance
+- **State Management**: Memory context and real-time session tracking
+- **OSC Communication**: Direct Ableton Live control via AbletonOSC
 
+## Quick Start
+
+### Prerequisites
+- macOS (Apple Silicon)
+- Ableton Live 12 Lite+
+- Python 3.8+
+- Ollama
+
+### Installation
 ```bash
-# Clone the repository
+# Clone and setup
 git clone https://github.com/Mauricio-KND/ableton-ai-agent.git
 cd ableton-ai-agent
-
-# Create virtual environment
-python3 -m venv venv
-source venv/bin/activate
-
-# Install dependencies
+python3 -m venv venv && source venv/bin/activate
 pip install -r requirements.txt
 
-# Copy environment configuration
-cp .env.example .env
+# Setup Ollama
+curl -fsSL https://ollama.ai/install.sh | sh
+ollama pull llama3.2:3b
+ollama serve
+
+# Configure Ableton Live
+# 1. Install AbletonOSC in /Music/Ableton/User Library/Remote Scripts
+# 2. Set Control Surface to "AbletonOSC" in Preferences → MIDI
 ```
 
-### Step 3: Configure Ableton Live
-
-1. Install AbletonOSC remote script in `/Music/Ableton/User Library/Remote Scripts`
-2. Open Ableton Live Preferences → MIDI
-3. Set Control Surface to "AbletonOSC"
-4. Configure Input/Output
-5. Enable Driver in Audio MIDI Setup
-
-## Usage
-
-### Start the Agent
-
+### Run
 ```bash
-# Run the agent
 python -m src.agent
 ```
 
-### Basic Commands
-
-#### Track Operations
-- "Create a techno track at 130 BPM"
-
-#### Session Control
-- "Set tempo to 140 BPM"
-- "Start playback"
-- "Stop playback"
-- "Set time signature to 4/4"
-- "Enable metronome"
-- "Get session info"
-
-#### Clip Management
-- "Create MIDI clip in track 1"
-- "Fire clip 2 in track 1"
-- "Add MIDI notes to clip"
-- "List clips in track 1"
-
-#### Device Management
-- "Add Reverb to track 1"
-- "Add Operator synth to track 2"
-- "Set device parameter"
-- "List available devices"
-
-#### Advanced Generation
-- "Generate track: techno, 130, F minor, drums+bass+melody"
-
-### Example Session
-
-```
-🎵 Ableton AI Agent with MCP Integration
-Type 'help' for available commands or 'quit' to exit
-==================================================
-
-🎹 What would you like to do in Ableton? Create a techno track at 130 BPM
-
-✅ Creating a techno track at 130 BPM by setting tempo and creating a MIDI track
-🔧 Executed 2/2 commands
-   ✓ Set tempo from 120.0 to 130.0
-   ✓ Created MIDI track 'Techno Track' (ID 0) in track 0
-
-🎹 What would you like to do in Ableton? Add Drum Rack to the techno track
-
-✅ Finding the techno track and adding a Drum Rack device
-🔧 Executed 1/1 commands
-   ✓ Added instrument 'Drum Rack' (ID 0) to track 0
-
-🎹 What would you like to do in Ableton? Start playback
-
-✅ Starting playback
-🔧 Executed 1/1 commands
-   ✓ Started playback
+### Verify Installation
+```bash
+python test_musical_tools.py  # Test musical pattern generation
 ```
 
-## MCP Tools Reference
+## API Reference
 
-### Track Tools
-| Tool | Description | Parameters |
-|------|-------------|------------|
-| `create_midi_track` | Create new MIDI track | `name: str` |
-| `create_audio_track` | Create new audio track | `name: str` |
+### Track Management (8 tools - Still testing)
+| Tool | Function | Parameters |
+|------|----------|------------|
+| `create_midi_track` | Create MIDI track | `name: str` |
+| `create_audio_track` | Create audio track | `name: str` |
 | `delete_track` | Delete track | `track_id: int` |
 | `set_track_name` | Rename track | `track_id: int, name: str` |
-| `set_track_volume` | Set track volume | `track_id: int, volume: float (0.0-1.0)` |
-| `set_track_mute` | Mute/unmute track | `track_id: int, mute: bool` |
-| `get_track_info` | Get track information | `track_id: int` |
-| `list_tracks` | List all tracks | `track_type: str (optional)` |
+| `set_track_volume` | Set volume | `track_id: int, volume: float (0.0-1.0)` |
+| `set_track_mute` | Mute/unmute | `track_id: int, mute: bool` |
+| `get_track_info` | Track details | `track_id: int` |
+| `list_tracks` | List tracks | `track_type: str (optional)` |
 
-### Session Tools
-| Tool | Description | Parameters |
-|------|-------------|------------|
-| `set_tempo` | Set session tempo | `tempo: float (20-999)` |
-| `get_tempo` | Get current tempo | - |
+### Session Control (8 tools - Still testing)
+| Tool | Function | Parameters |
+|------|----------|------------|
+| `set_tempo` | Set BPM | `tempo: float (20-999)` |
+| `get_tempo` | Get BPM | - |
 | `start_playback` | Start playback | - |
 | `stop_playback` | Stop playback | - |
-| `get_session_info` | Get session information | - |
-| `save_session` | Save session | `name: str (optional)` |
-| `set_time_signature` | Set time signature | `numerator: int, denominator: int` |
-| `set_metronome` | Enable/disable metronome | `enabled: bool` |
+| `get_session_info` | Session state | - |
+| `save_session` | Save project | `name: str (optional)` |
+| `set_time_signature` | Time signature | `numerator: int, denominator: int` |
+| `set_metronome` | Metronome toggle | `enabled: bool` |
 
-### Clip Tools
-| Tool | Description | Parameters |
-|------|-------------|------------|
+### Clip Management (8 tools - Still testing)
+| Tool | Function | Parameters |
+|------|----------|------------|
 | `create_midi_clip` | Create MIDI clip | `track_id: int, length_bars: int, name: str (optional)` |
 | `delete_clip` | Delete clip | `track_id: int, clip_id: int` |
 | `fire_clip` | Launch clip | `track_id: int, clip_id: int` |
 | `stop_clip` | Stop clip | `track_id: int, clip_id: int` |
-| `add_midi_notes` | Add MIDI notes | `track_id: int, clip_id: int, notes: list` |
-| `clear_clip_notes` | Clear all notes | `track_id: int, clip_id: int` |
-| `get_clip_info` | Get clip information | `track_id: int, clip_id: int` |
+| `add_midi_notes` | Add notes | `track_id: int, clip_id: int, notes: list` |
+| `clear_clip_notes` | Clear notes | `track_id: int, clip_id: int` |
+| `get_clip_info` | Clip details | `track_id: int, clip_id: int` |
 | `list_clips` | List clips | `track_id: int (optional)` |
 
-### Device Tools
-| Tool | Description | Parameters |
-|------|-------------|------------|
-| `add_device` | Add device to track | `track_id: int, device_name: str, device_type: str` |
+### Device Management (6 tools - Still testing)
+| Tool | Function | Parameters |
+|------|----------|------------|
+| `add_device` | Add device | `track_id: int, device_name: str, device_type: str` |
 | `remove_device` | Remove device | `track_id: int, device_id: int` |
-| `set_device_parameter` | Set device parameter | `track_id: int, device_id: int, parameter_name: str, value: float` |
-| `get_device_info` | Get device information | `track_id: int, device_id: int` |
+| `set_device_parameter` | Set parameter | `track_id: int, device_id: int, parameter_name: str, value: float` |
+| `get_device_info` | Device details | `track_id: int, device_id: int` |
 | `list_devices` | List devices | `track_id: int (optional), device_type: str (optional)` |
-| `list_available_devices` | List available devices | `device_type: str (optional)` |
+| `list_available_devices` | Available devices | `device_type: str (optional)` |
 
-### Musical Tools
-| Tool | Description | Parameters |
-|------|-------------|------------|
-| `create_techno_pattern` | Create complete techno pattern | `kick_track_id: int, bass_track_id: int, lead_track_id: int, key: str, scale_type: str, length_bars: int` |
-| `create_bassline` | Create bassline pattern | `track_id: int, key: str, scale_type: str, length_bars: int, pattern_type: str` |
-| `create_melody` | Create melody pattern | `track_id: int, key: str, scale_type: str, length_bars: int, notes_per_bar: int, rhythm_variety: float` |
-| `create_drum_pattern` | Create drum pattern | `track_id: int, pattern_type: str, length_bars: int` |
+### Musical Generation (4 tools - Still testing)
+| Tool | Function | Parameters |
+|------|----------|------------|
+| `create_techno_pattern` | Complete techno arrangement | `kick_track_id: int, bass_track_id: int, lead_track_id: int, key: str, scale_type: str, length_bars: int` |
+| `create_bassline` | Bassline pattern | `track_id: int, key: str, scale_type: str, length_bars: int, pattern_type: str` |
+| `create_melody` | Melody pattern | `track_id: int, key: str, scale_type: str, length_bars: int, notes_per_bar: int, rhythm_variety: float` |
+| `create_drum_pattern` | Drum pattern | `track_id: int, pattern_type: str, length_bars: int` |
 
-## Musical Features
+## Usage Examples
 
-### Supported Genres
-- Techno, House, Schranz, Trance, Drum & Bass, and more
+### Basic Operations
+```python
+# Track creation
+agent.execute("Create a techno track at 130 BPM")
 
-### Musical Elements
-- **Drums**: Various patterns (four-on-floor, basic, etc.)
-- **Bass**: Simple, walking, arpeggiated patterns
-- **Melody**: Scale-based generation with rhythmic variety
-- **Chords**: Diatonic progressions
+# Session control
+agent.execute("Set tempo to 140 BPM")
+agent.execute("Start playback")
 
-### Supported Keys
-- All major and minor keys
-- Chromatic, pentatonic, blues scales
-- Custom scale support
-
-## Troubleshooting
-
-### Common Issues
-
-**Ollama Connection Failed**
-```bash
-# Check if Ollama is running
-ollama list
-
-# Restart Ollama service
-ollama serve
+# Device management
+agent.execute("Add Reverb to track 1")
 ```
 
-**Ableton Not Responding**
-- Ensure Ableton Live is running
-- Check AbletonOSC control surface settings
-- Verify IAC Driver is configured correctly
-- Confirm MIDI ports are set to "IAC Driver (Bus 1)"
+### Musical Pattern Generation
+```python
+# Complete patterns
+agent.execute("Create a techno pattern with kick, bass, and lead")
 
-**Model Not Found**
-```bash
-# Pull the required model
-ollama pull llama3.2:3b
+# Individual elements
+agent.execute("Create a bassline in E minor on track 0")
+agent.execute("Add a melody in C major to track 1")
+agent.execute("Generate four-on-floor drums on track 2")
 ```
 
-**Import Errors**
-```bash
-# Reinstall dependencies
-pip install -r requirements.txt
+### Advanced Workflows (Still testing)
+```python
+# Complete song generation
+agent.execute("Generate track: techno, 130, F minor, drums+bass+melody")
 
-# Check Python version (3.8+ required)
-python --version
-```
-
-### Debug Mode
-
-Enable debug logging for detailed troubleshooting:
-
-```bash
-# Set log level in .env
-LOG_LEVEL=DEBUG
+# Context-aware operations
+agent.execute("Add reverb to the bass track")  # Uses memory context
 ```
 
 ## Development
 
 ### Project Structure
-
 ```
 src/
-├── agent.py                 # Main agent implementation
-├── mcp_tools/              # MCP tool implementations
-│   ├── track_tools.py      # Track management tools
-│   ├── session_tools.py    # Session control tools
-│   ├── clip_tools.py       # Clip management tools
-│   └── device_tools.py     # Device management tools
+├── agent.py                 # Main agent with enhanced LLM guidance
+├── mcp_tools/              # MCP tool implementations (34 tools)
+│   ├── track_tools.py      # Track management (8 tools)
+│   ├── session_tools.py    # Session control (8 tools)
+│   ├── clip_tools.py       # Clip management (8 tools)
+│   ├── device_tools.py     # Device management (6 tools)
+│   └── musical_tools.py    # Musical generation (4 tools)
 ├── state/                  # State management
-│   ├── memory.py          # Short-term memory system
+│   ├── memory.py          # Short-term memory with musical patterns
 │   └── session_manager.py # Real-time session tracking
-├── utils/                  # Utility functions
-│   ├── logger.py          # Logging utilities
+├── utils/                  # Core utilities
+│   ├── logger.py          # Structured logging
 │   ├── validators.py      # Input validation
 │   └── midi_generator.py  # Musical pattern generation
-├── scanner.py             # Legacy Ableton scanner
-├── ableton_driver.py      # Ableton OSC communication
+├── ableton_driver.py      # OSC communication layer
 └── config.py              # Configuration management
 ```
 
 ### Adding New Tools
 
-1. Create a new tool file in `src/mcp_tools/`
-2. Implement the tool class with `@mcp_tool` decorators
-3. Initialize the tool in `src/agent.py`
-4. Add tool to `_get_available_tools()` method
-
-Example:
+1. **Create Tool Class**
 ```python
-@mcp_tool
-def my_custom_tool(self, param1: str, param2: int) -> Dict[str, Any]:
-    """Custom tool description."""
-    try:
-        # Implementation here
-        return {
-            'success': True,
-            'message': f"Custom tool executed with {param1} and {param2}"
-        }
-    except Exception as e:
-        return {
-            'success': False,
-            'error': str(e),
-            'message': f"Failed to execute custom tool: {e}"
-        }
+# src/mcp_tools/my_tools.py
+class MyTools:
+    @mcp_tool
+    def my_tool(self, param: str) -> Dict[str, Any]:
+        """Tool description for LLM."""
+        try:
+            # Implementation
+            return {'success': True, 'message': 'Success'}
+        except Exception as e:
+            return {'success': False, 'error': str(e)}
 ```
+
+2. **Register Tool**
+```python
+# src/agent.py
+def _get_available_tools(self):
+    tools = {}
+    tools.update({
+        'my_tool': self.my_tools.my_tool,
+    })
+    return tools
+```
+
+### Testing Framework
+```bash
+# Core functionality
+python test_complete_system.py
+
+# Musical tools
+python test_musical_tools.py
+
+# Command processing
+python test_musical_commands.py
+```
+
+## Configuration
+
+### Environment Variables
+```bash
+# .env
+OLLAMA_API_KEY=ollama
+OLLAMA_BASE_URL=http://localhost:11434/v1
+LOG_LEVEL=INFO
+```
+
+### Supported Musical Elements
+- **Keys**: All major/minor, chromatic, pentatonic, blues
+- **Patterns**: Four-on-floor, basic, walking, arpeggiated
+- **Genres**: Techno, House, Trance, Drum & Bass
+- **Rhythms**: Variable complexity (0.0-1.0 variety)
+
+## Troubleshooting
+
+### Common Issues
+```bash
+# Ollama connection
+ollama list && ollama serve
+
+# Ableton connection
+# Check AbletonOSC control surface in Preferences → MIDI
+
+# Python dependencies
+pip install -r requirements.txt
+
+# Debug mode
+LOG_LEVEL=DEBUG python -m src.agent
+```
+
+### Performance Optimization
+- Use your favorite model through Ollama
+- Enable session monitoring for real-time updates
+- Clear memory context periodically for long sessions
 
 ## Contributing
 
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
+1. Fork repository
+2. Create feature branch
+3. Implement with type hints and error handling
+4. Add tests for new tools
+5. Update documentation
+6. Submit PR
 
 ### Code Standards
-- Follow PEP 8 style guidelines
-- Use type hints for all functions
-- Add comprehensive docstrings
-- Include error handling for all operations
-- Write tests for new features
+- PEP 8 compliance
+- Type hints required
+- Comprehensive docstrings
+- Error handling for all operations
+- Test coverage for new features
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## Support
-
-For support and questions:
-- Create an issue on GitHub
-- Check the troubleshooting section above
-- Review the logs for detailed error information
+MIT License - see [LICENSE](LICENSE) file.
 
 ---
 
-Control Ableton Live with the power of AI.
+**Technical Architecture**: MCP-based system with 34 tools, enhanced LLM guidance, and real-time musical pattern generation.

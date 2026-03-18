@@ -63,7 +63,7 @@ def check_abletonosc_requirements():
     
     requirements = [
         "✅ Ableton Live is running",
-        "❓ AbletonOSC remote script is installed in: /Users/mauricio.drada/Music/Ableton/User Library/Remote Scripts",
+        "❓ AbletonOSC remote script is installed in: ~/Music/Ableton/User Library/Remote Scripts",
         "❓ Control Surface is set to 'AbletonOSC' in Ableton Preferences",
         "❓ Input/Output ports are set to 'IAC Driver (Bus 1)'",
         "❓ IAC Driver is enabled in Audio MIDI Setup",
