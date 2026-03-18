@@ -55,9 +55,9 @@ def test_different_osc_formats():
             
             try:
                 driver.client.send_message(command, args)
-                print("   ✅ Message sent")
+                print("Message sent")
                 
-                # Wait a moment to see if Ableton responds
+                # Wait for Ableton to respond
                 time.sleep(1.0)
                 
                 # For interactive testing
@@ -65,22 +65,22 @@ def test_different_osc_formats():
                     input("   Press Enter to continue to next test...")
                     
             except Exception as e:
-                print(f"   ❌ Error: {e}")
+                print(f"Error: {e}")
         
-        print(f"\n🎯 Summary:")
+        print(f"\nSummary:")
         print(f"If any of the above commands caused changes in Ableton Live,")
         print(f"note which format worked and we can update the driver accordingly.")
         
         return True
         
     except Exception as e:
-        print(f"\n❌ Test failed: {e}")
+        print(f"\nTest failed: {e}")
         return False
 
 
 def test_port_variations():
     """Test different port combinations"""
-    print(f"\n🔌 Testing Different Port Combinations")
+    print(f"\nTesting Different Port Combinations")
     print("=" * 50)
     
     port_combinations = [
@@ -101,12 +101,12 @@ def test_port_variations():
             
             # Test tempo change
             client.send_message("/live/song/set/tempo", [128.0])
-            print(f"   ✅ Tempo message sent to port {send_port}")
+            print(f"Tempo message sent to port {send_port}")
             
             time.sleep(0.5)
             
         except Exception as e:
-            print(f"   ❌ Error: {e}")
+            print(f"Error: {e}")
 
 
 def main():

@@ -33,7 +33,7 @@ def test_basic_functionality():
         memory.add_device(0, 0, "Operator", "instrument")
         
         context = memory.get_context_summary()
-        print(f"✅ Memory Manager working: {context['total_tracks']} tracks, {context['total_devices']} devices")
+        print(f"Memory Manager working: {context['total_tracks']} tracks, {context['total_devices']} devices")
         
         # Test session manager
         print("\n🎛️ Testing Session Manager...")
@@ -44,12 +44,12 @@ def test_basic_functionality():
         time.sleep(0.2)  # Let it update once
         
         session_info = session.get_state_summary()
-        print(f"✅ Session Manager working: {len(session_info)} properties")
+        print(f"Session Manager working: {len(session_info)} properties")
         
         session.stop_monitoring()
         
         # Test agent initialization
-        print("\n🤖 Testing Agent Initialization...")
+        print("\nTesting Agent Initialization...")
         # Mock the Ollama client for testing
         class MockClient:
             def chat(self):
@@ -67,24 +67,24 @@ def test_basic_functionality():
         agent = AbletonAgent()
         agent.client = MockClient()
         
-        print(f"✅ Agent initialized with {len(agent.available_tools)} tools")
+        print(f"Agent initialized with {len(agent.available_tools)} tools")
         
         # Test tool execution
         print("\n🔧 Testing Tool Execution...")
         result = agent._execute_tool_call('list_tracks', {})
-        print(f"✅ Tool execution working: {result['success']}")
+        print(f"Tool execution working: {result['success']}")
         
         # Test LLM response parsing
-        print("\n🧠 Testing LLM Response Parsing...")
+        print("\nTesting LLM Response Parsing...")
         test_response = '{"thought": "test response", "commands": [{"tool": "test", "parameters": {}}]}'
         parsed = agent._parse_llm_response(test_response)
-        print(f"✅ Response parsing working: {parsed['thought']}")
+        print(f"Response parsing working: {parsed['thought']}")
         
-        print("\n🎉 All tests passed! The agent is ready to use.")
+        print("\nAll tests passed! The agent is ready to use.")
         return True
         
     except Exception as e:
-        print(f"\n❌ Test failed: {e}")
+        print(f"\nTest failed: {e}")
         import traceback
         traceback.print_exc()
         return False
@@ -102,29 +102,29 @@ def test_musical_features():
         
         # Test scale generation
         notes = generate_scale_notes('C', 'major')
-        print(f"✅ Scale generation: C major = {notes[:5]}...")
+        print(f"Scale generation: C major = {notes[:5]}...")
         
         # Test melody generation
         melody = generate_melody('C', 'major', 4, 8)
-        print(f"✅ Melody generation: {len(melody)} notes")
+        print(f"Melody generation: {len(melody)} notes")
         
         # Test bassline generation
         bassline = generate_bassline('C', 'minor', 4, 'simple')
-        print(f"✅ Bassline generation: {len(bassline)} notes")
+        print(f"Bassline generation: {len(bassline)} notes")
         
         # Test drum pattern
         drums = generate_drum_pattern('four_on_floor', 4)
-        print(f"✅ Drum pattern: {len(drums)} beats")
+        print(f"Drum pattern: {len(drums)} beats")
         
         # Test chord progression
         chords = generate_chord_progression('C', ['I', 'IV', 'V', 'I'], 'major')
-        print(f"✅ Chord progression: {len(chords)} chords")
+        print(f"Chord progression: {len(chords)} chords")
         
         print("🎼 All musical features working!")
         return True
         
     except Exception as e:
-        print(f"❌ Musical features test failed: {e}")
+        print(f"Musical features test failed: {e}")
         import traceback
         traceback.print_exc()
         return False
@@ -132,7 +132,7 @@ def test_musical_features():
 
 def main():
     """Run all tests."""
-    print("🚀 Ableton AI Agent Test Suite")
+    print("Ableton AI Agent Test Suite")
     print("=" * 40)
     
     success = True
@@ -147,14 +147,14 @@ def main():
     
     print("\n" + "=" * 40)
     if success:
-        print("🎉 ALL TESTS PASSED! The system is ready to use.")
+        print("ALL TESTS PASSED! The system is ready to use.")
         print("\nNext steps:")
         print("1. Ensure Ollama is running: ollama serve")
         print("2. Pull the model: ollama pull llama3.2:3b")
         print("3. Start Ableton Live")
         print("4. Run the agent: python src/agent.py")
     else:
-        print("❌ Some tests failed. Please check the errors above.")
+        print("Some tests failed. Please check the errors above.")
         sys.exit(1)
 
 

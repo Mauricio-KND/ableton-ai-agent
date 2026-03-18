@@ -14,20 +14,20 @@ from src.agent import AbletonAgent
 
 def test_complete_workflow():
     """Test a complete workflow from track creation to musical content."""
-    print("🎵 Complete System Workflow Test")
+    print("Complete System Workflow Test")
     print("=" * 50)
     
     try:
         agent = AbletonAgent()
-        print("✅ Agent initialized successfully")
+        print("Agent initialized successfully")
         
         # Test 1: Create tracks for a techno song
         print("\n1. Creating tracks for techno song:")
         result = agent.execute("Create a techno song with a bass, a lead synth and a drum")
         
         if result['success']:
-            print(f"   ✅ {result['thought']}")
-            print(f"   🔧 Executed {result['successful_commands']}/{result['total_commands']} commands")
+            print(f"{result['thought']}")
+            print(f"Executed {result['successful_commands']}/{result['total_commands']} commands")
             
             # Extract track IDs from the results
             track_ids = []
@@ -36,7 +36,7 @@ def test_complete_workflow():
                     track_ids.append(cmd_result['result']['track_id'])
                     print(f"      ✓ {cmd_result['result']['message']}")
             
-            print(f"   📍 Created tracks: {track_ids}")
+            print(f"Created tracks: {track_ids}")
             
             # Test 2: Add musical patterns to the tracks
             if len(track_ids) >= 3:
@@ -53,12 +53,12 @@ def test_complete_workflow():
                 )
                 
                 if pattern_result['success']:
-                    print(f"   ✅ {pattern_result['message']}")
+                    print(f"{pattern_result['message']}")
                     for part_name, part_result in pattern_result['parts'].items():
                         notes_count = part_result.get('notes_count', 'N/A')
                         print(f"      - {part_name}: {notes_count} notes")
                 else:
-                    print(f"   ❌ Pattern creation failed: {pattern_result.get('message', 'Unknown error')}")
+                    print(f"Pattern creation failed: {pattern_result.get('message', 'Unknown error')}")
             
             # Test 3: Test individual musical tools
             print("\n3. Testing individual musical tools:")
@@ -71,7 +71,7 @@ def test_complete_workflow():
                 length_bars=2,
                 pattern_type='simple'
             )
-            print(f"   {'✅' if bassline_result['success'] else '❌'} Bassline: {bassline_result.get('message', 'Failed')}")
+            print(f"   {'OK' if bassline_result['success'] else '❌'} Bassline: {bassline_result.get('message', 'Failed')}")
             
             # Test melody creation
             melody_result = agent.musical_tools.create_melody(
@@ -82,7 +82,7 @@ def test_complete_workflow():
                 notes_per_bar=4,
                 rhythm_variety=0.3
             )
-            print(f"   {'✅' if melody_result['success'] else '❌'} Melody: {melody_result.get('message', 'Failed')}")
+            print(f"   {'OK' if melody_result['success'] else '❌'} Melody: {melody_result.get('message', 'Failed')}")
             
             # Test drum pattern creation
             drum_result = agent.musical_tools.create_drum_pattern(
@@ -90,19 +90,19 @@ def test_complete_workflow():
                 pattern_type='four_on_floor',
                 length_bars=2
             )
-            print(f"   {'✅' if drum_result['success'] else '❌'} Drums: {drum_result.get('message', 'Failed')}")
+            print(f"   {'OK' if drum_result['success'] else '❌'} Drums: {drum_result.get('message', 'Failed')}")
             
         else:
-            print(f"   ❌ Track creation failed: {result.get('message', 'Unknown error')}")
+            print(f"Track creation failed: {result.get('message', 'Unknown error')}")
         
         agent.shutdown()
         
     except Exception as e:
-        print(f"❌ Error in complete workflow test: {e}")
+        print(f"Error in complete workflow test: {e}")
 
 def test_natural_language_musical_commands():
     """Test natural language commands for musical creation."""
-    print("\n\n🗣️  Natural Language Musical Commands Test")
+    print("\n\nNatural Language Musical Commands Test")
     print("=" * 50)
     
     try:
@@ -122,31 +122,31 @@ def test_natural_language_musical_commands():
             result = agent.execute(command)
             
             if result['success']:
-                print(f"   ✅ {result['thought']}")
-                print(f"   🔧 Executed {result['successful_commands']}/{result['total_commands']} commands")
+                print(f"{result['thought']}")
+                print(f"Executed {result['successful_commands']}/{result['total_commands']} commands")
                 
                 for cmd_result in result['results']:
                     if cmd_result['result']['success']:
-                        print(f"      ✓ {cmd_result['result']['message']}")
+                        print(f"{cmd_result['result']['message']}")
                     else:
-                        print(f"      ❌ {cmd_result['result']['message']}")
+                        print(f"{cmd_result['result']['message']}")
             else:
-                print(f"   ❌ Error: {result.get('message', 'Unknown error')}")
+                print(f"Error: {result.get('message', 'Unknown error')}")
         
         agent.shutdown()
         
     except Exception as e:
-        print(f"❌ Error testing natural language commands: {e}")
+        print(f"Error testing natural language commands: {e}")
 
 def test_system_capabilities():
     """Test overall system capabilities and tool availability."""
-    print("\n\n🔧 System Capabilities Test")
+    print("\n\nSystem Capabilities Test")
     print("=" * 50)
     
     try:
         agent = AbletonAgent()
         
-        print(f"✅ Total available tools: {len(agent.available_tools)}")
+        print(f"Total available tools: {len(agent.available_tools)}")
         
         # Categorize tools
         track_tools = [name for name in agent.available_tools.keys() if 'track' in name]
@@ -155,53 +155,50 @@ def test_system_capabilities():
         device_tools = [name for name in agent.available_tools.keys() if 'device' in name]
         musical_tools = [name for name in agent.available_tools.keys() if any(x in name for x in ['pattern', 'bassline', 'melody', 'drum'])]
         
-        print(f"   🎵 Track tools: {len(track_tools)}")
-        print(f"   ⏯️  Session tools: {len(session_tools)}")
-        print(f"   📼 Clip tools: {len(clip_tools)}")
-        print(f"   🎛️  Device tools: {len(device_tools)}")
-        print(f"   🎼 Musical tools: {len(musical_tools)}")
+        print(f"Track tools: {len(track_tools)}")
+        print(f"Session tools: {len(session_tools)}")
+        print(f"Clip tools: {len(clip_tools)}")
+        print(f"Device tools: {len(device_tools)}")
+        print(f"Musical tools: {len(musical_tools)}")
         
         # Test memory system
         memory_summary = agent.memory_manager.get_context_summary()
-        print(f"   🧠 Memory tracks: {memory_summary['total_tracks']}")
-        print(f"   🧠 Memory clips: {memory_summary['total_clips']}")
-        print(f"   🧠 Memory devices: {memory_summary['total_devices']}")
+        print(f"Memory tracks: {memory_summary['total_tracks']}")
+        print(f"Memory clips: {memory_summary['total_clips']}")
+        print(f"Memory devices: {memory_summary['total_devices']}")
         
         # Test session state
         session_info = agent.session_tools.get_session_info()
         if session_info['success']:
             session_data = session_info['session_info']
-            print(f"   🎛️  Session tempo: {session_data.get('tempo', 'N/A')}")
-            print(f"   🎛️  Session tracks: {len(session_data.get('tracks', []))}")
+            print(f"Session tempo: {session_data.get('tempo', 'N/A')}")
+            print(f"Session tracks: {len(session_data.get('tracks', []))}")
         
         agent.shutdown()
         
     except Exception as e:
-        print(f"❌ Error testing system capabilities: {e}")
+        print(f"Error testing system capabilities: {e}")
 
 def main():
     """Run all system tests."""
-    print("🧪 Ableton AI Agent - Complete System Test Suite")
+    print("Ableton AI Agent - Complete System Test Suite")
     print("=" * 60)
     
-    # Test complete workflow
     test_complete_workflow()
     
-    # Test natural language musical commands
     test_natural_language_musical_commands()
     
-    # Test system capabilities
     test_system_capabilities()
     
-    print("\n\n🎉 Complete System Test Suite Finished!")
+    print("\n\nComplete System Test Suite Finished!")
     print("=" * 60)
-    print("\n📋 System Status Summary:")
-    print("   ✅ Track creation and management working")
-    print("   ✅ Musical pattern generation working")
-    print("   ✅ Natural language processing working")
-    print("   ✅ Memory and state management working")
-    print("   ✅ All 34 MCP tools available")
-    print("   ✅ Complete workflow from creation to musical content")
+    print("\nSystem Status Summary:")
+    print("Track creation and management working")
+    print("Musical pattern generation working")
+    print("Natural language processing working")
+    print("Memory and state management working")
+    print("All 34 MCP tools available")
+    print("Complete workflow from creation to musical content")
 
 if __name__ == "__main__":
     main()
