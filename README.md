@@ -6,9 +6,9 @@ MCP-based AI agent for controlling Ableton Live through natural language command
 
 ```
 ┌─────────────────┐    ┌──────────────────┐    ┌─────────────────┐
-│   User Input   │───▶│  LLM (Ollama)    │───▶│   MCP Tools     │
-│  (Natural      │    │  llama3.2:3b     │    │   (34 Tools)    │
-│   Language)    │    │                  │    │                 │
+│   User Input   │───▶│  LLM (Ollama)    │───▶│                  │
+│  (Natural      │    │  llama3.2:3b     │    │      MCP Tools   │
+│   Language)    │    │                  │    │                  │
 └─────────────────┘    └──────────────────┘    └─────────────────┘
                                                        │
                        ┌──────────────────┐          │
@@ -67,7 +67,7 @@ python test_musical_tools.py  # Test musical pattern generation
 
 ## API Reference
 
-### Track Management (8 tools - Still testing)
+### Track Management (Still testing)
 | Tool | Function | Parameters |
 |------|----------|------------|
 | `create_midi_track` | Create MIDI track | `name: str` |
@@ -79,7 +79,7 @@ python test_musical_tools.py  # Test musical pattern generation
 | `get_track_info` | Track details | `track_id: int` |
 | `list_tracks` | List tracks | `track_type: str (optional)` |
 
-### Session Control (8 tools - Still testing)
+### Session Control (Still testing)
 | Tool | Function | Parameters |
 |------|----------|------------|
 | `set_tempo` | Set BPM | `tempo: float (20-999)` |
@@ -91,7 +91,7 @@ python test_musical_tools.py  # Test musical pattern generation
 | `set_time_signature` | Time signature | `numerator: int, denominator: int` |
 | `set_metronome` | Metronome toggle | `enabled: bool` |
 
-### Clip Management (8 tools - Still testing)
+### Clip Management (Still testing)
 | Tool | Function | Parameters |
 |------|----------|------------|
 | `create_midi_clip` | Create MIDI clip | `track_id: int, length_bars: int, name: str (optional)` |
@@ -103,7 +103,7 @@ python test_musical_tools.py  # Test musical pattern generation
 | `get_clip_info` | Clip details | `track_id: int, clip_id: int` |
 | `list_clips` | List clips | `track_id: int (optional)` |
 
-### Device Management (6 tools - Still testing)
+### Device Management (Still testing)
 | Tool | Function | Parameters |
 |------|----------|------------|
 | `add_device` | Add device | `track_id: int, device_name: str, device_type: str` |
@@ -113,7 +113,7 @@ python test_musical_tools.py  # Test musical pattern generation
 | `list_devices` | List devices | `track_id: int (optional), device_type: str (optional)` |
 | `list_available_devices` | Available devices | `device_type: str (optional)` |
 
-### Musical Generation (4 tools - Still testing)
+### Musical Generation (Still testing)
 | Tool | Function | Parameters |
 |------|----------|------------|
 | `create_techno_pattern` | Complete techno arrangement | `kick_track_id: int, bass_track_id: int, lead_track_id: int, key: str, scale_type: str, length_bars: int` |
@@ -278,4 +278,4 @@ MIT License - see [LICENSE](LICENSE) file.
 
 ---
 
-**Technical Architecture**: MCP-based system with tools, LLM guidance, and musical pattern generation.
+**Technical Architecture**: MCP-based system with tools and LLM guidance.
