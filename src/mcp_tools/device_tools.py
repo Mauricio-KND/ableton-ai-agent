@@ -104,8 +104,14 @@ class DeviceTools:
             
             self.logger.info(f"Adding {device_type} '{device_name}' to track {track_id}")
             
-            # This would use actual MCP call to Ableton
-            # Simulate device addition
+            # Note: AbletonOSC doesn't support direct device creation via OSC
+            # We'll provide guidance for manual device addition
+            self.logger.info(f"🎛️  Manual device addition required:")
+            self.logger.info(f"   1. In Ableton Live, select track {track_id}")
+            self.logger.info(f"   2. Click 'Device' button or press Shift+Cmd+T")
+            self.logger.info(f"   3. Search for '{device_name}' in the browser")
+            self.logger.info(f"   4. Double-click to load the device")
+            
             device_id = len(self.session.devices)  # Simulated device ID
             
             # Update session state

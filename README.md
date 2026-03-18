@@ -32,6 +32,7 @@ The system uses MCP (Model Context Protocol) architecture with these key compone
 - **Session Control**: Tempo, playback, time signature
 - **Clip Management**: Create, modify, launch clips
 - **Device Management**: Add and control instruments/effects
+- **Musical Generation**: Create patterns, basslines, melodies, drums
 
 ## Installation
 
@@ -191,6 +192,14 @@ Type 'help' for available commands or 'quit' to exit
 | `get_device_info` | Get device information | `track_id: int, device_id: int` |
 | `list_devices` | List devices | `track_id: int (optional), device_type: str (optional)` |
 | `list_available_devices` | List available devices | `device_type: str (optional)` |
+
+### Musical Tools
+| Tool | Description | Parameters |
+|------|-------------|------------|
+| `create_techno_pattern` | Create complete techno pattern | `kick_track_id: int, bass_track_id: int, lead_track_id: int, key: str, scale_type: str, length_bars: int` |
+| `create_bassline` | Create bassline pattern | `track_id: int, key: str, scale_type: str, length_bars: int, pattern_type: str` |
+| `create_melody` | Create melody pattern | `track_id: int, key: str, scale_type: str, length_bars: int, notes_per_bar: int, rhythm_variety: float` |
+| `create_drum_pattern` | Create drum pattern | `track_id: int, pattern_type: str, length_bars: int` |
 
 ## Musical Features
 

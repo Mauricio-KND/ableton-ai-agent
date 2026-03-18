@@ -363,3 +363,114 @@ def generate_drum_pattern(
                     })
     
     return drums
+
+
+def generate_techno_pattern(
+    key: str = 'E',
+    scale_type: str = 'minor',
+    length_bars: int = 4
+) -> Dict[str, List[Dict[str, Any]]]:
+    """
+    Generate a complete techno pattern with kick, bass, and lead.
+    
+    Args:
+        key: Root key (default E minor for techno)
+        scale_type: Scale type (minor for techno)
+        length_bars: Length in bars
+        
+    Returns:
+        Dictionary with all MIDI parts
+    """
+    patterns = {}
+    
+    # Techno kick - four-on-the-floor with some variation
+    kick_pattern = []
+    for bar in range(length_bars):
+        for beat in range(4):
+            start_time = bar * 4.0 + beat * 1.0
+            velocity = 110 if beat in [0, 2] else 100  # Stronger on 1 and 3
+            kick_pattern.append({
+                'pitch': 36,  # C1 (kick)
+                'velocity': velocity,
+                'start_time': start_time,
+                'duration': 0.1
+            })
+    patterns['kick'] = kick_pattern
+    
+    # Techno bassline - simple repetitive pattern
+    bass_pattern = []
+    scale_notes = generate_scale_notes(key, scale_type, 1)
+    bass_notes = [scale_notes[0], scale_notes[3], scale_notes[0], scale_notes[5]]  # Root-5th pattern
+    
+    for bar in range(length_bars):
+        for beat, note_idx in enumerate([0, 1, 0, 1]):  # Simple 2-note pattern
+            start_time = bar * 4.0 + beat * 1.0
+            if beat % 2 == 0:  # On kick beats
+                bass_pattern.append({
+                    'pitch': bass_notes[note_idx],
+                    'velocity': 80,
+                    'start_time': start_time,
+                    'duration': 0.8
+                })
+    patterns['bass'] = bass_pattern
+    
+    # Techno lead - simple melodic pattern
+    lead_pattern = []
+    lead_notes = scale_notes[:5]  # Use pentatonic subset
+    for bar in range(length_bars):
+        for i in range(8):  # Eighth notes
+            start_time = bar * 4.0 + i * 0.5
+            if i % 4 == 0:  # Every other beat
+                pitch = lead_notes[i % len(lead_notes)]
+                lead_pattern.append({
+                    'pitch': pitch + 12,  # Octave up
+                    'velocity': 70,
+                    'start_time': start_time,
+                    'duration': 0.3
+                })
+    patterns['lead'] = lead_pattern
+    
+    # Hi-hats - 16th notes
+    hihat_pattern = []
+    for bar in range(length_bars):
+        for i in range(16):
+            start_time = bar * 4.0 + i * 0.25
+            velocity = 50 if i % 2 == 0 else 40  # Accented pattern
+            hihat_pattern.append({
+                'pitch': 42,  # Closed hi-hat
+                'velocity': velocity,
+                'start_time': start_time,
+                'duration': 0.05
+            })
+    patterns['hihat'] = hihat_pattern
+    
+    return patterns
+
+
+def create_midi_clip_data(
+    notes: List[Dict[str, Any]],
+    clip_length: float = 4.0
+) -> List[List]:
+    """
+    Convert note data to AbletonOSC MIDI format.
+    
+    Args:
+        notes: List of note dictionaries
+        clip_length: Length of the clip in bars
+        
+    Returns:
+        List of MIDI note data for AbletonOSC
+    """
+    midi_data = []
+    for note in notes:
+        # AbletonOSC format: pitch, start_time, duration, velocity, mute
+        midi_note = [
+            note['pitch'],
+            note['start_time'],
+            note['duration'],
+            note['velocity'],
+            0  # mute (0 = unmuted)
+        ]
+        midi_data.append(midi_note)
+    
+    return midi_data

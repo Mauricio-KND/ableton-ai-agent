@@ -128,6 +128,29 @@ class MemoryManager:
         if track_id in self.tracks:
             self.tracks[track_id].devices.append(name)
             
+    def add_musical_pattern(self, pattern_name: str, track_ids: List[int], pattern_data: Dict[str, Any]) -> None:
+        """
+        Add a musical pattern to memory.
+        
+        Args:
+            pattern_name: Name of the pattern
+            track_ids: List of track IDs involved in the pattern
+            pattern_data: Pattern data including notes and structure
+        """
+        # Store pattern information in a simple format
+        if not hasattr(self, 'musical_patterns'):
+            self.musical_patterns = {}
+        
+        self.musical_patterns[pattern_name] = {
+            'track_ids': track_ids,
+            'pattern_data': pattern_data,
+            'created_at': datetime.now()
+        }
+        
+        # Update track usage for all involved tracks
+        for track_id in track_ids:
+            self.update_track_usage(track_id)
+            
     def get_track_by_name(self, name: str) -> Optional[int]:
         """
         Find track ID by name (case-insensitive).
