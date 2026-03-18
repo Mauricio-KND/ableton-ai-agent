@@ -20,7 +20,17 @@ logs/
 data/session_state.json
 data/*.json
 data/user_*/
-data/raw/
+
+# Security and audit documentation (local-only)
+*SECURITY_*.md
+*IMPROVEMENTS_*.md
+
+# External documentation copies
+*Ableton*-README.md
+
+# Temporary scripts
+*cleanup_*.py
+*temp_*.py
 
 # Test outputs and sessions
 test_*.log
@@ -32,3 +42,6 @@ test_*.log
 
 # OSC communication logs
 osc_*.log
+
+data/raw
+data/
