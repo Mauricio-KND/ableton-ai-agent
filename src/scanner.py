@@ -112,6 +112,6 @@ if __name__ == "__main__":
     try:
         with open(output_path, "w") as f:
             json.dump(snapshot, f, indent=4)
-        print(f"\n✅ Snapshot guardado exitosamente en: {output_path}")
+        print(f"\nSnapshot guardado exitosamente en: {output_path}")
     except Exception as e:
-        print(f"❌ Error al guardar el archivo: {e}")
+        print(f"Error al guardar el archivo: {e}")
