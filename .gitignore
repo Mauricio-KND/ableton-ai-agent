@@ -16,5 +16,32 @@ venv/
 logs/
 *.log
 
+# User-specific Ableton data
+data/session_state.json
+data/*.json
+data/user_*/
+
+# Security and audit documentation (local-only)
+*SECURITY_*.md
+*IMPROVEMENTS_*.md
+
+# External documentation copies
+*Ableton*-README.md
+
+# Temporary scripts
+*cleanup_*.py
+*temp_*.py
+
+# Test outputs and sessions
+test_*.log
+*.session
+
+# Temporary Ableton files
+*.als
+*.asd
+
+# OSC communication logs
+osc_*.log
+
 data/raw
 data/
