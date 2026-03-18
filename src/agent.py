@@ -27,6 +27,7 @@ from .mcp_tools.track_tools import initialize_track_tools
 from .mcp_tools.session_tools import initialize_session_tools
 from .mcp_tools.clip_tools import initialize_clip_tools
 from .mcp_tools.device_tools import initialize_device_tools
+from .mcp_tools.musical_tools import initialize_musical_tools
 
 # Legacy imports for backward compatibility
 from .scanner import AbletonScanner
@@ -76,6 +77,9 @@ class AbletonAgent:
             self.memory_manager, self.session_manager, self.driver
         )
         self.device_tools = initialize_device_tools(
+            self.memory_manager, self.session_manager, self.driver
+        )
+        self.musical_tools = initialize_musical_tools(
             self.memory_manager, self.session_manager, self.driver
         )
         
@@ -138,6 +142,14 @@ class AbletonAgent:
             'list_available_devices': self.device_tools.list_available_devices,
         })
         
+        # Musical tools
+        tools.update({
+            'create_techno_pattern': self.musical_tools.create_techno_pattern,
+            'create_bassline': self.musical_tools.create_bassline,
+            'create_melody': self.musical_tools.create_melody,
+            'create_drum_pattern': self.musical_tools.create_drum_pattern,
+        })
+        
         return tools
         
     def _create_system_prompt(self, user_command: str) -> str:
@@ -165,6 +177,29 @@ MEMORY CONTEXT (recently created elements):
 AVAILABLE TOOLS:
 {chr(10).join(tool_descriptions)}
 
+MUSICAL CONTENT CREATION WORKFLOW:
+When users ask for musical patterns, basslines, melodies, or drums:
+1. FIRST check if tracks already exist in memory context
+2. Use existing track_ids (0, 1, 2, etc.) from memory
+3. Use MUSICAL TOOLS for actual content creation:
+   - create_bassline: For bass patterns
+   - create_melody: For melodic content
+   - create_drum_pattern: For drum patterns
+   - create_techno_pattern: For complete techno arrangements
+4. ONLY create new tracks if user specifically asks for new tracks
+
+TRACK REFERENCE RULES:
+1. Use track_ids (0, 1, 2) NOT track names for tool parameters
+2. Check memory context for existing tracks before creating new ones
+3. If user mentions "channel X" or "track X", find the corresponding track_id
+4. NEVER create duplicate tracks - reuse existing ones when possible
+
+MUSICAL TOOL EXAMPLES:
+- "Create bass pattern" → use create_bassline with existing track_id
+- "Add melody to track 1" → use create_melody with track_id=1
+- "Make techno drums" → use create_drum_pattern or create_techno_pattern
+- "Create bassline in E minor" → use create_bassline(key='E', scale_type='minor')
+
 RESPONSE FORMAT:
 You must respond with a JSON object containing:
 {{
@@ -184,29 +219,38 @@ CRITICAL TRACK ID MANAGEMENT:
 4. Store track_ids mentally: track 0, track 1, track 2, etc.
 5. Use track_ids for: set_track_volume, set_track_name, add_device, create_midi_clip, etc.
 
-EXAMPLE WORKFLOW:
-User: "Create a techno song with a bass, a lead synth and a drum"
+EXAMPLE WORKFLOWS:
+
+Example 1 - Creating musical patterns on existing tracks:
+User: "Create a bass midi pattern for the bass track and a lead pattern for the lead track"
 Response: {{
-  "thought": "Creating a techno song by setting tempo, creating 3 tracks (bass, lead, drums), and setting their volumes",
+  "thought": "Creating bass and lead patterns using existing tracks from memory",
+  "commands": [
+    {{"tool": "create_bassline", "parameters": {{"track_id": 0, "key": "E", "scale_type": "minor", "length_bars": 4}}}},
+    {{"tool": "create_melody", "parameters": {{"track_id": 1, "key": "E", "scale_type": "minor", "length_bars": 4}}}}
+  ]
+}}
+
+Example 2 - Complete techno song creation:
+User: "Create a techno song with bass, lead, and drums"
+Response: {{
+  "thought": "Creating complete techno arrangement with tracks and musical content",
   "commands": [
     {{"tool": "set_tempo", "parameters": {{"tempo": 130}}}},
     {{"tool": "create_midi_track", "parameters": {{"name": "Bass"}}}},
     {{"tool": "create_midi_track", "parameters": {{"name": "Lead"}}}},
     {{"tool": "create_audio_track", "parameters": {{"name": "Drums"}}}},
-    {{"tool": "set_track_volume", "parameters": {{"track_id": 0, "volume": 0.8}}}},
-    {{"tool": "set_track_volume", "parameters": {{"track_id": 1, "volume": 0.7}}}},
-    {{"tool": "set_track_volume", "parameters": {{"track_id": 2, "volume": 0.9}}}}
+    {{"tool": "create_techno_pattern", "parameters": {{"kick_track_id": 2, "bass_track_id": 0, "lead_track_id": 1, "key": "E", "scale_type": "minor", "length_bars": 4}}}}
   ]
 }}
 
 IMPORTANT GUIDELINES:
-1. Always check the current session state before making changes
-2. Use memory context to reference previously created tracks/clips
+1. Always check memory context for existing tracks before creating new ones
+2. Use MUSICAL TOOLS for content creation, not just empty clip creation
 3. Use actual numeric track_ids (0, 1, 2, etc.) not placeholder names
-4. Validate parameters before executing commands
-5. Handle errors gracefully and provide helpful feedback
-6. Break complex commands into multiple simple tool calls
-7. Use descriptive names when creating new elements
+4. For musical content, prefer create_bassline/create_melody over create_midi_clip
+5. Break complex commands into logical sequences
+6. Use descriptive names when creating new elements
 
 Now process this command: "{user_command}"
 """
