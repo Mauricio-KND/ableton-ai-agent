@@ -16,5 +16,19 @@ venv/
 logs/
 *.log
 
-data/raw
-data/
+# User-specific Ableton data
+data/session_state.json
+data/*.json
+data/user_*/
+data/raw/
+
+# Test outputs and sessions
+test_*.log
+*.session
+
+# Temporary Ableton files
+*.als
+*.asd
+
+# OSC communication logs
+osc_*.log
